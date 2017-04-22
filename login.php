@@ -27,11 +27,7 @@
           
           <input type="password" class="form-control input-lg" id="pass" placeholder="Password" required="" />
           
-          
-          <div class="pwstrength_viewport_progress"></div>
-          
-          
-          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign Up</button>
+          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Log In</button>
           <div>
             Sign-Up <a href="signup.php">Here</a>  
           </div>
