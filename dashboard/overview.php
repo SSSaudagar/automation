@@ -1,4 +1,9 @@
-<?php require_once("connect.php"); 
+<?php 
+session_start();
+    if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status']) or !isset($_SESSION['LoggedIn'])) die("Oops something went wrong. Please try signing up or logging in again");
+    if(!($_SESSION['status']=='1' and $_SESSION['LoggedIn']==TRUE and isset($_SESSION['OTP']))) die("Unauthorised Access Detected");
+
+require_once("connect.php"); 
 
 $result1=$conn->query("SELECT * FROM `dht11` ORDER BY `dht11`.`ROWID` DESC limit 1");
 if ($result1->num_rows > 0) {
@@ -59,7 +64,7 @@ if ($result1->num_rows > 0) {
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Dashboard</a></li>
                         <li><a href="#">Profile</a></li>
-                        <li><a href="#">Help</a></li>
+                        <li><a href="../logout.php">Logout</a></li>
                     </ul>
                 </div>
             </div>

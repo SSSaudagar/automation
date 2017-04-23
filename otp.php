@@ -1,3 +1,15 @@
+<?php 
+    session_start();
+    if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status'])) die("Oops something went wrong. Please try signing up or logging in again");
+    echo $_SESSION['OTP'];
+    if(isset($_POST['OTP'])){
+        if($_POST['OTP']==$_SESSION['OTP']){
+            $_SESSION['LoggedIn']=TRUE;
+            header("Location:dashboard/overview.php");
+            die();
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +22,14 @@
     <!-- Bootstrap -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/signup.css" rel="stylesheet">  
-
+      <style>
+          #username{
+              font-size: 200%;
+          }
+          #error{
+              color: darkred;
+          }
+      </style>
   </head>
   <body>
     
@@ -23,12 +42,14 @@
       <section class="login-form">
         <form method="post" action="#" role="login">
           <img src="assets/img/662135-8521.png" class="img-responsive" alt="" />
-          
-          <input type="password" class="form-control input-lg" id="pass" placeholder="Enter OTP" required="" <?php //readonly ?>/>
+          <div id=username ><?=$_SESSION['username']?></div>
+          <input type="password" class="form-control input-lg" name="OTP" id="pass" placeholder="Enter OTP" required="" <?php if($_SESSION['status']=='0') echo "readonly" ?>/>
+            <?php if($_SESSION['status']=='0') {?>    <div id=error>
+                Either you are attempting to log into a new account or your account has been blocked. Please contact admin to grant access to your user.
+            </div> <?php }else{ ?>
           <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Log In</button>
-         
-          
-        </form>
+            <?php } ?>
+          </form>
         
         
       </section>  

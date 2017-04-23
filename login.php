@@ -21,11 +21,11 @@
     
     <div class="col-md-4">
       <section class="login-form">
-        <form method="post" action="#" role="login">
+        <form method="post" action="./honey/checker.php" role="login">
           <img src="assets/img/662135-8521.png" class="img-responsive" alt="" />
-          <input type="text" name="username " placeholder="Username" class="form-control input-lg" required />
+          <input type="text" name="username" placeholder="Username" class="form-control input-lg" required />
           
-          <input type="password" class="form-control input-lg" id="pass" placeholder="Password" required="" />
+          <input type="password" name="password" class="form-control input-lg" id="pass" placeholder="Password" required="" />
           
           <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Log In</button>
           <div>

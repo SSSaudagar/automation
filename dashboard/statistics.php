@@ -1,3 +1,8 @@
+<?php
+session_start();
+    if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status']) or !isset($_SESSION['LoggedIn'])) die("Oops something went wrong. Please try signing up or logging in again");
+    if(!($_SESSION['status']=='1' and $_SESSION['LoggedIn']==TRUE and isset($_SESSION['OTP']))) die("Unauthorised Access Detected");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,7 +44,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Profile</a></li>
-                    <li><a href="#">Help</a></li>
+                    <li><a href="../logout.php">Logout</a></li>
                 </ul>
             </div>
         </div>
