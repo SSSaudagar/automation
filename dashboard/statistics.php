@@ -2,6 +2,12 @@
 session_start();
     if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status']) or !isset($_SESSION['LoggedIn'])) die("Oops something went wrong. Please try signing up or logging in again");
     if(!($_SESSION['status']=='1' and $_SESSION['LoggedIn']==TRUE and isset($_SESSION['OTP']))) die("Unauthorised Access Detected");
+
+    require_once("connect.php");
+    $sql="SELECT `DATETIME`,`AVG_TEMP` FROM `dht11avg` WHERE `DATETIME` LIKE '2017-04-21%' ";
+    $result1=$conn->query($sql);
+    $sql="SELECT `DATETIME`,`AVG_HUMI` FROM `dht11avg` WHERE `DATETIME` LIKE '2017-04-21%' ";
+    $result2=$conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,22 +104,30 @@ session_start();
         function drawBackgroundColor() {
             
             var data = new google.visualization.DataTable();
-            data.addColumn('number', 'X');
-            data.addColumn('number', 'Dogs');
-
+            data.addColumn('timeofday', 'X');
+            data.addColumn('number', 'Temperature');
             data.addRows([
-        [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
-        [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35],
-        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-        [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-        [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-        [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-        [66, 70], [67, 72], [68, 75], [69, 80]
+                
+            <?php 
+                while($row=$result1->fetch_assoc()){
+                    $d=new DateTime($row['DATETIME']);
+                    echo " [{$d->format('[H,i,s]')},{$row['AVG_TEMP']}],";
+                }
+            ?>
+
+//            data.addRows([
+//        [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
+//        [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35],
+//        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
+//        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
+//        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
+//        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
+//        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
+//        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
+//        [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
+//        [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
+//        [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
+//        [66, 70], [67, 72], [68, 75], [69, 80]
       ]);
 
             var options = {
@@ -121,7 +135,7 @@ session_start();
                     title: 'Time'
                 },
                 vAxis: {
-                    title: 'Popularity'
+                    title: 'Temperature'
                 },
                 backgroundColor: '#f1f8e9'
             };
@@ -130,30 +144,25 @@ session_start();
             chart.draw(data, options);
             
             var data1 = new google.visualization.DataTable();
-            data1.addColumn('number', 'X');
+            data1.addColumn('timeofday', 'time');
             data1.addColumn('number', 'Humidity');
 
             data1.addRows([
-        [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
-        [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35],
-        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-        [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-        [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-        [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-        [66, 70], [67, 72], [68, 75], [69, 80]
+                
+            <?php 
+                while($row=$result2->fetch_assoc()){
+                    $d=new DateTime($row['DATETIME']);
+                    echo " [{$d->format('[H,i,s]')},{$row['AVG_HUMI']}],";
+                }
+            ?>
       ]);
 
             var options1 = {
                 hAxis: {
-                    title: 'Humidity'
+                    title: 'Time'
                 },
                 vAxis: {
-                    title: 'Popularity'
+                    title: 'Humidity'
                 },
                 backgroundColor: '#f1f8e9',
                 colors:['red']
