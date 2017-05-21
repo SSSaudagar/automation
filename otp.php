@@ -1,9 +1,9 @@
 <?php 
     session_start();
     if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status'])) die("Oops something went wrong. Please try signing up or logging in again");
-    if (!isset($_POST['OTP']) and isset($_SESSION['OTP')){
+    if (!isset($_POST['OTP']) and isset($_SESSION['OTP'])){
         //sendmail
-        //echo $_SESSION['OTP'];
+        echo $_SESSION['OTP'];
     }
     if(isset($_POST['OTP'])){
         if($_POST['OTP']==$_SESSION['OTP']){

@@ -2,11 +2,16 @@
 session_start();
     if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status']) or !isset($_SESSION['LoggedIn'])) die("Oops something went wrong. Please try signing up or logging in again");
     if(!($_SESSION['status']=='1' and $_SESSION['LoggedIn']==TRUE and isset($_SESSION['OTP']))) die("Unauthorised Access Detected");
-
+    if(isset($_GET['date']) and $_GET['date']>0){
+        $date= date("Y-m-d",mktime(0,0,0,date("m")  , date("d")-$_GET['date'], date("Y")));
+    }else{
+        $date=date("Y-m-d");
+        $_GET['date']=0;
+    }
     require_once("connect.php");
-    $sql="SELECT `DATETIME`,`AVG_TEMP` FROM `dht11avg` WHERE `DATETIME` LIKE '2017-04-21%' ";
+    $sql="SELECT `DATETIME`,`AVG_TEMP` FROM `dht11avg` WHERE `DATETIME` LIKE '{$date}%' ";
     $result1=$conn->query($sql);
-    $sql="SELECT `DATETIME`,`AVG_HUMI` FROM `dht11avg` WHERE `DATETIME` LIKE '2017-04-21%' ";
+    $sql="SELECT `DATETIME`,`AVG_HUMI` FROM `dht11avg` WHERE `DATETIME` LIKE '{$date}%' ";
     $result2=$conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -66,24 +71,31 @@ session_start();
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 class="page-header">Dashboard</h1>
-
-                <div class="row placeholders">
-                    <div class="col-xs-12  placeholder">
-                        <div id="chart_div"></div>
-                        <h4>Temperature  Statistics</h4>
-                        <span class="text-muted">Variation in temperature in 24 hour period </span>
+                <h1 class="page-header">Dashboard - <?=$date ?></h1>
+                <div class=row>
+                    <div class="col-md-1 full-height">
+                        <a href="<?php echo $_SERVER['PHP_SELF']."?date=".($_GET['date']+1);  ?>"><span class="glyphicon glyphicon-triangle-left navigation"></span></a>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row placeholders">
+                            <div class="col-xs-12  placeholder">
+                                <div id="chart_div"></div>
+                                <h4>Temperature  Statistics</h4>
+                                <span class="text-muted">Variation in temperature in 24 hour period </span>
+                            </div>
+                        </div>
+                        <div class="row placeholders">
+                            <div class="col-xs-12  placeholder">
+                                <div id="chart_div2"></div>
+                                <h4> Humidity Statistics</h4>
+                                <span class="text-muted">Variation in humidity in 24 hour period </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 full-height">
+                        <a href="<?php echo $_SERVER['PHP_SELF']."?date=".($_GET['date']-1);  ?>"><span class="glyphicon glyphicon-triangle-right navigation"></span></a>
                     </div>
                 </div>
-                <div class="row placeholders">
-                    <div class="col-xs-12  placeholder">
-                        <div id="chart_div2"></div>
-                        <h4> Humidity Statistics</h4>
-                        <span class="text-muted">Variation in humidity in 24 hour period </span>
-                    </div>
-                </div>
-             
-             
             </div>
         </div>
     </div>
