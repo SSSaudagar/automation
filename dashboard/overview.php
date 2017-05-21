@@ -1,7 +1,7 @@
 <?php 
 session_start();
     if(empty($_SESSION) or !isset($_SESSION['username']) or !isset($_SESSION['status']) or !isset($_SESSION['LoggedIn'])) die("Oops something went wrong. Please try signing up or logging in again");
-    if(!($_SESSION['status']=='1' and $_SESSION['LoggedIn']==TRUE and isset($_SESSION['OTP']))) die("Unauthorised Access Detected");
+    if(!($_SESSION['status']>='1' and $_SESSION['LoggedIn']==TRUE and isset($_SESSION['OTP']))) die("Unauthorised Access Detected");
 
 require_once("connect.php"); 
 
@@ -77,6 +77,7 @@ if ($result1->num_rows > 0) {
                         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
                         <li><a href="statistics.php">Usage Statistics</a></li>
                         <li><a href="control.php">System Control</a></li>
+                        <li><a href="admin.php">Admin Panel</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
