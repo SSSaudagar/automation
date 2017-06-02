@@ -1,14 +1,5 @@
 <?php
-function generateRandomString($length = 6) {
-    srand(time(0));
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
+
 session_start();
     require_once("connect.php");
     if(empty($_POST) or !isset($_POST['username']) or !isset($_POST['password'])) die("Oops something went wrong. Please try signing up or logging in again");
